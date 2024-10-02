@@ -31,6 +31,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
     Timer gameLoop;
     Timer placeObstaclesTimer;
+    boolean gameOver = false;
 
     Player bird;
     ArrayList<Obstacle> pipes;
@@ -97,13 +98,35 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         bird.y = Math.max(bird.y, 0);
 
         // obstacles
-        pipes.forEach((pipe) -> pipe.x += velocityX);
+        pipes.forEach((pipe) -> {
+            pipe.x += velocityX;
+
+            if (collision(bird, pipe)) {
+                gameOver = true;
+            }
+        });
+
+        if (bird.y > Board.height) {
+            gameOver = true;
+        }
+    }
+
+    public boolean collision(Player a, Obstacle b) {
+        return a.x < b.x + b.width &&   //a's top left corner doesn't reach b's top right corner
+                a.x + a.width > b.x &&   //a's top right corner passes b's top left corner
+                a.y < b.y + b.height &&  //a's top left corner doesn't reach b's bottom left corner
+                a.y + a.height > b.y;    //a's bottom left corner passes b's top left corner
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         move();
         repaint();
+
+        if (gameOver) {
+            placeObstaclesTimer.stop();
+            gameLoop.stop();
+        }
     }
 
     @Override
