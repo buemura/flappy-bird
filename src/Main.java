@@ -4,7 +4,6 @@ public class Main {
     public static void main(String[] args) {
 
         JFrame frame = new JFrame("Flappy Bird");
-//        frame.setVisible(true);
         frame.setSize(Board.width, Board.height);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
@@ -14,6 +13,5 @@ public class Main {
         frame.add(flappyBird);
         frame.pack();
         frame.setVisible(true);
-
     }
 }
