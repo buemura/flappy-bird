@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
 
 public class Game extends JPanel implements ActionListener, KeyListener {
     Image backgroudImage;
@@ -35,7 +34,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
     Player bird;
     ArrayList<Obstacle> pipes;
-    Random random = new Random();
+    double score = 0;
 
     Game() {
         setPreferredSize(new Dimension(Board.width, Board.height));
@@ -76,6 +75,15 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         graphics.drawImage(birdImage, bird.x, bird.y, bird.width, bird.height, null); // Draw player
 
         pipes.forEach((pipe) -> graphics.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height, null));
+
+        graphics.setColor(Color.white);
+        graphics.setFont(new Font("Arial", Font.PLAIN, 32));
+
+        if (gameOver) {
+            graphics.drawString("Game Over: " + String.valueOf((int) score), 10 , 50);
+        } else {
+            graphics.drawString(String.valueOf((int) score), Board.width / 2, 50);
+        }
     }
 
     public void placeObstacles() {
@@ -101,14 +109,15 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         pipes.forEach((pipe) -> {
             pipe.x += velocityX;
 
-            if (collision(bird, pipe)) {
-                gameOver = true;
+            if (!pipe.passed && bird.x > pipe.x + pipe.width) {
+                pipe.passed = true;
+                score += 0.5;
             }
+
+            if (collision(bird, pipe)) gameOver = true;
         });
 
-        if (bird.y > Board.height) {
-            gameOver = true;
-        }
+        if (bird.y > Board.height) gameOver = true;
     }
 
     public boolean collision(Player a, Obstacle b) {
@@ -116,6 +125,16 @@ public class Game extends JPanel implements ActionListener, KeyListener {
                 a.x + a.width > b.x &&   //a's top right corner passes b's top left corner
                 a.y < b.y + b.height &&  //a's top left corner doesn't reach b's bottom left corner
                 a.y + a.height > b.y;    //a's bottom left corner passes b's top left corner
+    }
+
+    private void setInitialState() {
+        bird.y = playerY;
+        velocityY = 0;
+        pipes.clear();
+        score = 0;
+        gameOver = false;
+        gameLoop.start();
+        placeObstaclesTimer.start();
     }
 
     @Override
@@ -133,6 +152,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             velocityY = -9;
+            if (gameOver) this.setInitialState();
         }
     }
 
