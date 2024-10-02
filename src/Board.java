@@ -15,6 +15,7 @@ public class Board extends JFrame {
     public void start(JPanel panel) {
         super.add(panel);
         super.pack();
+        panel.requestFocus();
         super.setVisible(true);
     }
 }
