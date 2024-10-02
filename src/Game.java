@@ -79,9 +79,15 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
     public void placeObstacles() {
         int randomPipeY = (int) (pipeY - ((double) pipeHeight /4) - Math.random()*((double) pipeHeight /2));
+        int openingSpace = Board.height / 4;
+
         Obstacle topPipe = new Obstacle(pipeX, pipeY, pipeWidth, pipeHeight, topPipeImage);
         topPipe.y = randomPipeY;
         pipes.add(topPipe);
+
+        Obstacle bottomPipe = new Obstacle(pipeX, pipeY, pipeWidth, pipeHeight, bottomPipeImage);
+        bottomPipe.y = topPipe.y + pipeHeight + openingSpace;
+        pipes.add(bottomPipe);
     }
 
     public void move() {
