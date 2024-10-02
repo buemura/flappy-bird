@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        Board board = new Board("Flappy Bird");
+        Game.Board board = new Game.Board("Flappy Bird");
         board.start(new Game());
     }
 }

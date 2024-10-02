@@ -1,3 +1,6 @@
+import entities.Obstacle;
+import entities.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -161,4 +164,24 @@ public class Game extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {}
+
+    public static class Board extends JFrame {
+        static int width = 360;
+        static int height = 640;
+
+        public Board(String boardName) {
+            super(boardName);
+            super.setSize(Board.width, Board.height);
+            super.setLocationRelativeTo(null);
+            super.setResizable(false);
+            super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        }
+
+        public void start(JPanel panel) {
+            super.add(panel);
+            super.pack();
+            panel.requestFocus();
+            super.setVisible(true);
+        }
+    }
 }
