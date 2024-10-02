@@ -1,8 +1,6 @@
-import javax.swing.*;
-
 public class Main {
     public static void main(String[] args) {
         Board board = new Board("Flappy Bird");
-        board.start(new FlappyBird());
+        board.start(new Game());
     }
 }

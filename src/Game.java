@@ -3,48 +3,28 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class FlappyBird extends JPanel implements ActionListener {
-
+public class Game extends JPanel implements ActionListener {
     Image backgroudImage;
     Image birdImage;
     Image topPipeImage;
     Image bottomPipeImage;
 
-    // Bird
-    int birdX = Board.width / 8;
-    int birdY = Board.height / 2;
-    int birdWidth = 34;
-    int birdHeight = 24;
-
-    class Bird {
-        int x = birdX;
-        int y = birdY;
-        int width = birdWidth;
-        int height = birdHeight;
-        Image img;
-
-        Bird(Image image) {
-            this.img = image;
-        }
-    }
-
     // Game Logic
-    Bird bird;
     int velocityY = -6;
-
+    Player bird;
     Timer gameLoop;
 
-    FlappyBird() {
+    Game() {
         setPreferredSize(new Dimension(Board.width, Board.height));
 
-        // Load imagesß
+        // Load images
         backgroudImage = new ImageIcon(getClass().getResource("./assets/flappybirdbg.png")).getImage();
         birdImage = new ImageIcon(getClass().getResource("./assets/flappybird.png")).getImage();
         topPipeImage = new ImageIcon(getClass().getResource("./assets/toppipe.png")).getImage();
         bottomPipeImage = new ImageIcon(getClass().getResource("./assets/bottompipe.png")).getImage();
 
-        // bird
-        bird = new Bird(birdImage);
+        // player
+        bird = new Player(Board.width / 8, Board.height / 2, 34, 24, birdImage);
 
         // game timer
         gameLoop = new Timer(1000/60, this);
